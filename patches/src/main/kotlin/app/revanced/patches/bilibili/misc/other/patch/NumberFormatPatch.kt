@@ -13,6 +13,7 @@ import app.revanced.util.exception
 
 @Patch(
     name = "Number format",
+    use = false,
     description = "数字格式化补丁",
     compatiblePackages = [
         CompatiblePackage(name = "tv.danmaku.bili"),

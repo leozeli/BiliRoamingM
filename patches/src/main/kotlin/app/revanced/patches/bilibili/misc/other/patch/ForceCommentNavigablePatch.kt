@@ -18,6 +18,7 @@ import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 
 @Patch(
     name = "Force comment time navigable",
+    use = false,
     description = "允许分P及交互视频评论时间点可点击",
     compatiblePackages = [
         CompatiblePackage(name = "tv.danmaku.bili"),

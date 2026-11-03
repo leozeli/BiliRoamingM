@@ -14,6 +14,7 @@ import app.revanced.util.exception
 
 @Patch(
     name = "BL route intercept",
+    use = false,
     description = "哔哩哔哩页面路由修改",
     compatiblePackages = [
         CompatiblePackage(name = "tv.danmaku.bili"),

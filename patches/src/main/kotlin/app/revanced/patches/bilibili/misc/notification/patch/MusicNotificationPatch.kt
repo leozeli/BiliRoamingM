@@ -27,6 +27,7 @@ import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 
 @Patch(
     name = "Music notification",
+    use = false,
     description = "原生音乐通知样式",
     compatiblePackages = [
         CompatiblePackage(name = "tv.danmaku.bili"),

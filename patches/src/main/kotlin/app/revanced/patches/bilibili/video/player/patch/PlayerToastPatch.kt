@@ -16,6 +16,7 @@ import com.android.tools.smali.dexlib2.builder.instruction.BuilderInstruction35c
 
 @Patch(
     name = "Player toast",
+    use = false,
     description = "播放器特定样式toast显示拦截",
     compatiblePackages = [
         CompatiblePackage(name = "tv.danmaku.bili"),

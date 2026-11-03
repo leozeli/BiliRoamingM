@@ -16,6 +16,7 @@ import com.android.tools.smali.dexlib2.iface.instruction.formats.Instruction35c
 
 @Patch(
     name = "Moss",
+    use = false,
     description = "gRPC 通信引擎服务 hook",
     compatiblePackages = [
         CompatiblePackage(name = "tv.danmaku.bili"),

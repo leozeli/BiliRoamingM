@@ -10,6 +10,7 @@ import app.revanced.util.set
 import app.revanced.util.walk
 
 @Patch(
+    use = false,
     compatiblePackages = [
         CompatiblePackage(name = "tv.danmaku.bili"),
         CompatiblePackage(name = "tv.danmaku.bilibilihd"),

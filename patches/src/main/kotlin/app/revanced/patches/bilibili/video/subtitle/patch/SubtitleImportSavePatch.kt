@@ -20,6 +20,7 @@ import com.android.tools.smali.dexlib2.iface.reference.StringReference
 
 @Patch(
     name = "Subtitle import and save",
+    use = false,
     description = "导入及保存字幕相关功能补丁",
     compatiblePackages = [
         CompatiblePackage(name = "tv.danmaku.bili"),

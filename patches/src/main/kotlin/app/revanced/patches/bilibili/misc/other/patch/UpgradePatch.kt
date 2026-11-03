@@ -13,6 +13,7 @@ import com.android.tools.smali.dexlib2.Opcode
 
 @Patch(
     name = "Upgrade",
+    use = false,
     description = "自定义更新辅助补丁",
     compatiblePackages = [
         CompatiblePackage(name = "tv.danmaku.bili"),

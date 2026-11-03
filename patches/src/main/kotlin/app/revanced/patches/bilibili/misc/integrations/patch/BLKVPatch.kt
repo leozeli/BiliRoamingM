@@ -26,7 +26,11 @@ object BLKVPatch : BytecodePatch(setOf(BLKVFingerprint)) {
         val stockByNameMethod = result.method
         val stockByFileMethod = result.classDef.methods.first { m ->
             !AccessFlags.SYNTHETIC.isSet(m.accessFlags) && AccessFlags.STATIC.isSet(m.accessFlags)
-                    && m.parameterTypes == listOf("Landroid/content/Context;", "Ljava/io/File;", "Z", "I")
+                    && m.parameterTypes == listOf(
+                "Landroid/content/Context;",
+                "Ljava/io/File;",
+                "Z"
+            )
         }
         val utilsGetContextMethod = utilsClass.mutableClass.methods.first { it.name == "getContext" }
         utilsClass.mutableClass.methods.run {
@@ -37,8 +41,7 @@ object BLKVPatch : BytecodePatch(setOf(BLKVFingerprint)) {
                     """
                     invoke-static {}, $utilsGetContextMethod
                     move-result-object v0
-                    const/4 v1, 0x0
-                    invoke-static {v0, p0, p1, v1}, $stockByNameMethod
+                    invoke-static {v0, p0, p1}, $stockByNameMethod
                     move-result-object v0
                     return-object v0
                 """.trimIndent()
@@ -51,8 +54,7 @@ object BLKVPatch : BytecodePatch(setOf(BLKVFingerprint)) {
                     """
                     invoke-static {}, $utilsGetContextMethod
                     move-result-object v0
-                    const/4 v1, 0x0
-                    invoke-static {v0, p0, p1, v1}, $stockByFileMethod
+                    invoke-static {v0, p0, p1}, $stockByFileMethod
                     move-result-object v0
                     return-object v0
                 """.trimIndent()

@@ -14,6 +14,7 @@ import app.revanced.util.exception
 
 @Patch(
     name = "Dark switch",
+    use = false,
     description = "我的页面深色模式切换弹框确认",
     compatiblePackages = [
         CompatiblePackage(name = "tv.danmaku.bili"),

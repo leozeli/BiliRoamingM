@@ -11,6 +11,7 @@ import app.revanced.util.exception
 
 @Patch(
     name = "Prevent pre download module",
+    use = false,
     description = "阻止模块预下载",
     compatiblePackages = [
         CompatiblePackage(name = "tv.danmaku.bili"),

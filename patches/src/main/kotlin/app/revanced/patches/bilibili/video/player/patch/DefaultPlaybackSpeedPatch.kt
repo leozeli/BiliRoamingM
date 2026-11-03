@@ -16,6 +16,7 @@ import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 
 @Patch(
     name = "Default playback speed",
+    use = false,
     description = "自定义播放器默认播放速度",
     compatiblePackages = [
         CompatiblePackage(name = "tv.danmaku.bili"),
