@@ -71,19 +71,39 @@ public class JSONPatch {
         return name;
     });
 
+    // Play 6.7.1 removed these types. A bare instanceof resolves the class and
+    // throws ClassNotFoundException / NoClassDefFoundError on every parse.
+    private static final Class<?> SPLASH_DATA =
+            findClass("tv.danmaku.bili.ui.splash.ad.model.SplashData");
+    private static final Class<?> SPLASH_SHOW_DATA =
+            findClass("tv.danmaku.bili.ui.splash.ad.model.SplashShowData");
+    private static final Class<?> DM_ADVERT =
+            findClass("com.bilibili.ad.adview.videodetail.danmakuv2.model.DmAdvert");
+
+    private static Class<?> findClass(String name) {
+        try {
+            return Class.forName(name, false, JSONPatch.class.getClassLoader());
+        } catch (ClassNotFoundException ignored) {
+            return null;
+        }
+    }
+
     @Keep
     public static Object parseObjectHook(Object obj) {
         try {
             return parseObjectHookInternal(obj);
         } catch (Throwable t) {
             Logger.error(t, () -> "JSONPatch, parse object hook error");
+            if (t instanceof LinkageError || t instanceof ClassNotFoundException)
+                return obj;
             throw t;
         }
     }
 
     private static Object parseObjectHookInternal(Object obj) {
         Object data = (obj instanceof GeneralResponse<?> resp) ? resp.data : obj;
-        if (data instanceof SplashData splashData) {
+        if (SPLASH_DATA != null && SPLASH_DATA.isInstance(data)) {
+            SplashData splashData = (SplashData) data;
             if (Settings.PurifySplash.get()) try {
                 splashData.splashList.clear();
                 splashData.strategyList.clear();
@@ -91,7 +111,8 @@ public class JSONPatch {
                 splashData.getSplashList().clear();
                 splashData.getStrategyList().clear();
             }
-        } else if (data instanceof SplashShowData showData) {
+        } else if (SPLASH_SHOW_DATA != null && SPLASH_SHOW_DATA.isInstance(data)) {
+            SplashShowData showData = (SplashShowData) data;
             if (Settings.PurifySplash.get()) try {
                 showData.strategyList.clear();
             } catch (Throwable ignored) {
@@ -102,7 +123,8 @@ public class JSONPatch {
                 // no problem, see com.bilibili.okretro.BiliApiDataCallback
                 return null;
             }
-        } else if (data instanceof DmAdvert dmAdvert) {
+        } else if (DM_ADVERT != null && DM_ADVERT.isInstance(data)) {
+            DmAdvert dmAdvert = (DmAdvert) data;
             if (Settings.BlockUpRcmdAds.get()) {
                 List<Dm> ads = dmAdvert.getAds();
                 if (ads != null)
