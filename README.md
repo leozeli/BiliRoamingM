@@ -65,13 +65,17 @@ cd BiliRoamingM
 ```shell
 ./gradlew dist
 java -jar revanced-cli.jar patch \
-  --merge build/BiliRoamingM-integrations-1.23.5.apk \
-  --patch-bundle build/BiliRoamingM-patches-1.23.5.jar \
+  --merge build/BiliRoamingM-integrations-1.23.6.apk \
+  --patch-bundle build/BiliRoamingM-patches-1.23.6.jar \
   --signing-levels 1,2,3 \
   bilibili.apk
 ```
 
-Play 6.7.1 的 `MainActivityV2.onBackPressed` 有 19 个寄存器，`p0` 实际是 `v18`。旧补丁用 `invoke-static {p0}`（只能编码 v0–v15）。smali 会打出非致命的 `Invalid register: v18` 并丢掉这条 invoke，后面的 `move-result v0` 没有结果，启动时 ART 报 `VerifyError`（`copyRes1 v0<- result0 type=Undefined`）。现在这条以及同方法里的 `onCreate` / `onStart` / `onSaveInstanceState` 都改成 `invoke-static/range`。Lib bili 本身只重写寄存器很少的 `Utils` 方法，不是这次崩溃的来源。
+Play 6.7.1 的 `MainActivityV2.onBackPressed` 有 19 个寄存器，`p0` 实际是 `v18`。这条以及 `onCreate` / `onStart` / `onSaveInstanceState` 使用 `invoke-static/range`，避免 `VerifyError`。
+
+`Unlock ProtoBuf` 会把 `GeneratedMessageLite` 的 private setter 改成 public。6.7.1 上 `Metrics.r` 仍用 `invoke-direct` 调 `setExtraFlag`，启动约 5 秒后 `IgHttpDns.report` 抛 `IncompatibleClassChangeError`。现在同一类里对这些方法的 `invoke-direct` / `invoke-direct/range` 会改成 `invoke-virtual`。
+
+`Json` 里的 `SplashData`、`SplashShowData`、`DmAdvert` 在 6.7.1 已不存在。直接 `instanceof` 会在每次解析时抛 `ClassNotFoundException`。这三类改为先 `Class.forName`，找不到就跳过。
 
 默认会打上集成注入、设置入口，以及仍然能对上指纹的 QoL 补丁（例如去广告块、分享净化、字幕样式、播放器核心、屏蔽直播间手势、自定义启动页等）。
 
