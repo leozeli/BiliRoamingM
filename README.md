@@ -6,7 +6,7 @@
 >
 > 此 Fork 针对 Play 版本测试，仅进行维护性更新。
 >
-> 已在 **`com.bilibili.app.in` 6.7.1（versionCode 9161100）** 上验证默认补丁可以打上。粉版 / HD 未在本版本复测。
+> 已在 **`com.bilibili.app.in` 6.7.1（versionCode 9161100）** 上验证默认补丁可以打上，且 `MainActivityV2.onBackPressed` 的注入在 19 寄存器方法上能通过校验。粉版 / HD 未在本版本复测。
 
 > [!NOTE]
 >
@@ -65,11 +65,13 @@ cd BiliRoamingM
 ```shell
 ./gradlew dist
 java -jar revanced-cli.jar patch \
-  --merge build/BiliRoamingM-integrations-1.23.4.apk \
-  --patch-bundle build/BiliRoamingM-patches-1.23.4.jar \
+  --merge build/BiliRoamingM-integrations-1.23.5.apk \
+  --patch-bundle build/BiliRoamingM-patches-1.23.5.jar \
   --signing-levels 1,2,3 \
   bilibili.apk
 ```
+
+Play 6.7.1 的 `MainActivityV2.onBackPressed` 有 19 个寄存器，`p0` 实际是 `v18`。旧补丁用 `invoke-static {p0}`（只能编码 v0–v15）。smali 会打出非致命的 `Invalid register: v18` 并丢掉这条 invoke，后面的 `move-result v0` 没有结果，启动时 ART 报 `VerifyError`（`copyRes1 v0<- result0 type=Undefined`）。现在这条以及同方法里的 `onCreate` / `onStart` / `onSaveInstanceState` 都改成 `invoke-static/range`。Lib bili 本身只重写寄存器很少的 `Utils` 方法，不是这次崩溃的来源。
 
 默认会打上集成注入、设置入口，以及仍然能对上指纹的 QoL 补丁（例如去广告块、分享净化、字幕样式、播放器核心、屏蔽直播间手势、自定义启动页等）。
 
