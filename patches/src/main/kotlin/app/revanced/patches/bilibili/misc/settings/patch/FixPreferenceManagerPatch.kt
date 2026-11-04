@@ -16,7 +16,7 @@ import app.revanced.util.exception
  */
 @Patch(
     name = "Fix preference manager",
-    description = "修复PreferenceManager被混淆后引起的问题",
+    description = "修复PreferenceManager被混淆后引起的问题，避免覆盖被标成final的getSharedPreferences",
     compatiblePackages = [
         CompatiblePackage(name = "tv.danmaku.bili"),
         CompatiblePackage(name = "tv.danmaku.bilibilihd"),
@@ -57,19 +57,15 @@ object FixPreferenceManagerPatch : BytecodePatch(setOf(PreferenceManagerFingerpr
             }
         }
 
-        val getSharedPreferencesMethod = preferenceManagerDef.methods.first {
-            it.parameters.isEmpty() && it.returnType == "Landroid/content/SharedPreferences;"
-        }
         val modulePrefsManagerClass =
             context.findClass("Lapp/revanced/bilibili/settings/ModulePreferenceManager;")!!.mutableClass
-        modulePrefsManagerClass.setSuperClass(preferenceManagerDef.type)
-        modulePrefsManagerClass.methods.run {
-            first { it.name == "getSharedPreferences" }.name = getSharedPreferencesMethod.name
-            first { it.name == "<init>" }.replaceInstruction(
-                0, """
-                invoke-direct {p0, p1}, $preferenceManagerDef-><init>(Landroid/content/Context;)V
-            """.trimIndent()
-            )
+        // Proxy PreferenceManager only when its cache field must be widened. Rewriting the
+        // whole obfuscated class on the non-final path is unnecessary.
+        val preferenceManager = when (chooseSharedPreferencesBind(preferenceManagerDef)) {
+            is SharedPreferencesBind.StoreField ->
+                context.proxy(preferenceManagerDef).mutableClass
+            is SharedPreferencesBind.Override -> preferenceManagerDef
         }
+        applyModulePreferenceManagerFix(preferenceManager, modulePrefsManagerClass)
     }
 }
