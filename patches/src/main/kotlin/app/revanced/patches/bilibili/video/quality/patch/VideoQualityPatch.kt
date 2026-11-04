@@ -13,6 +13,7 @@ import com.android.tools.smali.dexlib2.iface.Method
 
 @Patch(
     name = "Video default quality",
+    use = false,
     description = "视频默认画质设置",
     compatiblePackages = [
         CompatiblePackage(name = "tv.danmaku.bili"),

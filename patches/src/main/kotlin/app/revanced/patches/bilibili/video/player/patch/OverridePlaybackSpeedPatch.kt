@@ -28,6 +28,7 @@ import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 
 @Patch(
     name = "Override playback speed",
+    use = false,
     description = "自定义播放器播放速度列表",
     compatiblePackages = [
         CompatiblePackage(name = "tv.danmaku.bili"),

@@ -14,6 +14,7 @@ import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 
 @Patch(
     name = "Toast",
+    use = false,
     description = "调用APP自带Toast补丁",
     compatiblePackages = [
         CompatiblePackage(name = "tv.danmaku.bili"),

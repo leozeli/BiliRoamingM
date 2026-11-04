@@ -17,6 +17,7 @@ import app.revanced.patches.bilibili.misc.integrations.patch.ConfigPatch as Inte
 
 @Patch(
     name = "Config",
+    use = false,
     description = "Config hook",
     dependencies = [IntegrationConfigPatch::class],
     compatiblePackages = [

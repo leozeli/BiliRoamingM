@@ -20,6 +20,7 @@ import com.android.tools.smali.dexlib2.iface.value.StringEncodedValue
 
 @Patch(
     name = "Pegasus hook",
+    use = false,
     description = "首页推荐流hook",
     compatiblePackages = [
         CompatiblePackage(name = "tv.danmaku.bili"),

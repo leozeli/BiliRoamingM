@@ -8,6 +8,7 @@ import app.revanced.util.children
 import app.revanced.util.get
 import app.revanced.util.insertBefore
 import app.revanced.util.set
+import app.revanced.util.walk
 
 @Patch(
     name = "Play manifest compatibility",
@@ -30,6 +31,16 @@ object PlayManifestCompatibilityPatch : ResourcePatch() {
                     manifest.insertBefore(dom["application"], permTag) {
                         this[nameAttr] = perm
                     }
+                }
+            }
+            // Fused Play feature modules (livestream, fasthybrid, …) keep non-base
+            // package ids (0x7b, 0x7d). apktool prints those theme refs as raw
+            // decimals, which aapt2 rejects. Fall back to a framework theme.
+            val brokenTheme = Regex("^@\\d+$")
+            manifest.walk { element ->
+                val theme = element["android:theme"]
+                if (theme.isNotEmpty() && brokenTheme.matches(theme)) {
+                    element["android:theme"] = "@android:style/Theme.Translucent.NoTitleBar"
                 }
             }
         }

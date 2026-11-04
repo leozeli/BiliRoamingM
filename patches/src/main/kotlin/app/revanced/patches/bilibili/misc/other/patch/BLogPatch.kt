@@ -11,6 +11,7 @@ import app.revanced.util.exception
 
 @Patch(
     name = "BLog",
+    use = false,
     description = "放宽日志打印级别",
     compatiblePackages = [
         CompatiblePackage(name = "tv.danmaku.bili"),

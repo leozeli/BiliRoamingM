@@ -14,6 +14,7 @@ import app.revanced.util.exception
 
 @Patch(
     name = "Copy enhance",
+    use = false,
     description = "自由复制补丁",
     compatiblePackages = [
         CompatiblePackage(name = "tv.danmaku.bili"),

@@ -15,6 +15,7 @@ import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 
 @Patch(
     name = "Force hardware codec",
+    use = false,
     description = "强制硬件解码",
     compatiblePackages = [
         CompatiblePackage(name = "tv.danmaku.bili"),

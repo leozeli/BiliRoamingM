@@ -16,6 +16,7 @@ import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 
 @Patch(
     name = "Remember playback speed",
+    use = false,
     description = "记住播放速度变化",
     compatiblePackages = [
         CompatiblePackage(name = "tv.danmaku.bili"),

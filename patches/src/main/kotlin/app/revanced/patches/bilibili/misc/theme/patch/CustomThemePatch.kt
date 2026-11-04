@@ -15,6 +15,7 @@ import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 
 @Patch(
     name = "Custom theme color",
+    use = false,
     description = "自定义主题色",
     compatiblePackages = [
         CompatiblePackage(name = "tv.danmaku.bili"),

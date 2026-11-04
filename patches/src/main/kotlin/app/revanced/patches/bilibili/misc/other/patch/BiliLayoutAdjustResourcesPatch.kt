@@ -225,7 +225,7 @@ object BiliLayoutAdjustResourcesPatch : ResourcePatch() {
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="4dp"
-                            android:text="@string/theseus_playlist_default_order"
+                            android:text="默认"
                             android:textColor="@color/Text3" />
                     </LinearLayout>
 
@@ -358,7 +358,7 @@ object BiliLayoutAdjustResourcesPatch : ResourcePatch() {
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="4dp"
-                            android:text="@string/theseus_playlist_default_order"
+                            android:text="默认"
                             android:textColor="@color/Text3" />
                     </LinearLayout>
 
@@ -366,7 +366,7 @@ object BiliLayoutAdjustResourcesPatch : ResourcePatch() {
                         android:id="@id/arrow"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:background="@drawable/theseus_shape_arrow_button_bg"
+                        android:background="@android:color/transparent"
                         android:padding="4dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintLeft_toRightOf="@id/order_layout"

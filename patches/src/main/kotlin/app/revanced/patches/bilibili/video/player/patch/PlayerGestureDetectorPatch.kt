@@ -23,6 +23,7 @@ import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 
 @Patch(
     name = "Player gesture detector hook",
+    use = false,
     description = "播放器 GestureDetector hook",
     compatiblePackages = [
         CompatiblePackage(name = "tv.danmaku.bili"),

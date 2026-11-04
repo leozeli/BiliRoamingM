@@ -19,6 +19,7 @@ import app.revanced.util.exception
 
 @Patch(
     name = "Drawer",
+    use = false,
     description = "我的页面移至侧滑栏辅助补丁",
     compatiblePackages = [
         CompatiblePackage(name = "tv.danmaku.bili"),

@@ -14,6 +14,7 @@ import com.android.tools.smali.dexlib2.AccessFlags
 
 @Patch(
     name = "OkHttp",
+    use = false,
     description = "OkHttp网络请求响应Hook",
     compatiblePackages = [
         CompatiblePackage(name = "tv.danmaku.bili"),

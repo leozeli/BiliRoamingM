@@ -13,6 +13,7 @@ import com.android.tools.smali.dexlib2.Opcode
 
 @Patch(
     name = "Auto like",
+    use = false,
     description = "视频自动点赞补丁",
     compatiblePackages = [
         CompatiblePackage(name = "tv.danmaku.bili"),
