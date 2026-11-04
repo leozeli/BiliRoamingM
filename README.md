@@ -65,8 +65,8 @@ cd BiliRoamingM
 ```shell
 ./gradlew dist
 java -jar revanced-cli.jar patch \
-  --merge build/BiliRoamingM-integrations-1.23.7.apk \
-  --patch-bundle build/BiliRoamingM-patches-1.23.7.jar \
+  --merge build/BiliRoamingM-integrations-1.23.8.apk \
+  --patch-bundle build/BiliRoamingM-patches-1.23.8.jar \
   --signing-levels 1,2,3 \
   bilibili.apk
 ```
@@ -86,6 +86,8 @@ Play 6.7.1 上指纹已失效、因此 **默认关闭**（需要时用 CLI `--in
 - 界面：复制增强、深色切换、抽屉、自定义主题色、Toast、数字格式、评论时间跳转、自动点赞、音乐通知、Pegasus、预下载模块
 
 打开「哔哩漫游X」会实例化 `ModulePreferenceManager`。Play 6.7.1 把 `PreferenceManager.getSharedPreferences()` 收成 `Landroidx/preference/g;` 上的 **final** 方法 `b()SharedPreferences`。补丁若把子类方法改名为 `b`，ART 在 inflate 时抛 `LinkageError`。现在只在目标方法非 final 时才覆盖；目标是 final 时删掉覆盖，并在 `super` 返回后把模块的 `SharedPreferences` 写进该方法读取的字段。依赖未打上补丁的选项在 6.7.1 上仍然不会生效。未重新加入番剧解锁或大会员画质试用。
+
+登录后 `h30.q$d` 会对 ProtoBuf 做 `String.valueOf`，进入被替换的 `MessageLiteToString.toString` → `MessageLiteToStringEx`。`<clinit>` 里 `DownloadSettingsConfig.class` 这类硬引用在 Play 6.7.1 上解析失败（`DownloadSettingsConfig` 已不在包里），类初始化失败，之后每一次 `toString` 都抛 `NoClassDefFoundError`，AsyncTask 把进程打死。这些分发配置改为按类名单独 `Class.forName`，缺的或改名的跳过，还在的继续登记。未重新加入番剧解锁或大会员画质试用。
 
 Play 安装包是 bundle。打包前先把 base 与 `config.arm64_v8a`（以及需要的 dpi split）合并成单个 apk，否则 `libc++_shared.so` 不在 base 里，`libbiliroamingx.so` 不会被注入。
 
