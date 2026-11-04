@@ -16,6 +16,11 @@ dependencies {
     implementation(libs.smali)
     // Used in JsonGenerator.
     implementation(libs.gson)
+    testImplementation(kotlin("test"))
+}
+
+tasks.withType<Test>().configureEach {
+    useJUnitPlatform()
 }
 
 tasks.jar {
